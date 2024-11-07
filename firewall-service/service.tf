@@ -23,7 +23,7 @@ resource "fortios_firewallservice_custom" "firewall_service" {
   sctp_portrange = lookup(each.value, "sctp_portrange", null)
   category       = lookup(each.value, "category", "Custom Services Created by Terraform")
 
-  depends_on = [fortios_firewallservice_category.terraform-service-category-name]
+  depends_on = [fortios_firewallservice_category.terraform-service-category]
 }
 
 
