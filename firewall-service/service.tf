@@ -15,7 +15,7 @@ resource "fortios_firewallservice_category" "firewall_service_category" {
 resource "fortios_firewallservice_custom" "firewall_service" {
   for_each = var.firewall_services
 
-  name           = each.value["name"]
+  name           = each.key
   protocol       = lookup(each.value, "protocol", "TCP/UDP/SCTP")
   comment        = lookup(each.value, "comment", "managed-by-terraform")
   tcp_portrange  = lookup(each.value, "tcp_portrange", null)
