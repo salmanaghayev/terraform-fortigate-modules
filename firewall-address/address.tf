@@ -9,7 +9,7 @@ terraform {
 
 # Resource to create firewall addresses using for_each
 resource "fortios_firewall_address" "firewall_address" {
-  for_each = var.addresses
+  for_each = var.firewall_addresses
 
   name    = each.value["name"]
   type    = each.value["type"]
