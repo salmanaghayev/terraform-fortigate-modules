@@ -19,4 +19,8 @@ resource "fortios_firewall_address" "firewall_address" {
   subnet  = each.value["type"] == "ipmask" ? lookup(each.value, "subnet", null) : null
   fqdn    = each.value["type"] == "fqdn" ? lookup(each.value, "fqdn", null) : null
   country = each.value["type"] == "geography" ? lookup(each.value, "country", null) : null
+
+  lifecycle {
+    create_before_destroy = true
+  }
 }
