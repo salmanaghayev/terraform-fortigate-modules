@@ -32,14 +32,14 @@ resource "fortios_firewall_policy" "firewall_policy" {
 
   # Define source and destination address blocks
   dynamic "srcaddr" {
-    for_each = [each.value.src_addr]
+    for_each = each.value.src_addr
     content {
       name = srcaddr.value
     }
   }
 
   dynamic "dstaddr" {
-    for_each = [each.value.dst_addr]
+    for_each = each.value.dst_addr
     content {
       name = dstaddr.value
     }
@@ -47,7 +47,7 @@ resource "fortios_firewall_policy" "firewall_policy" {
 
   # Define service blocks referencing the created firewall services
   dynamic "service" {
-    for_each = [each.value.service]
+    for_each = each.value.service
     content {
       name = service.value
     }
