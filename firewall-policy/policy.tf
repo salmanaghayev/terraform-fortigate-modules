@@ -1,3 +1,11 @@
+terraform {
+  required_providers {
+    fortios = {
+      source = "fortinetdev/fortios"
+    }
+  }
+}
+
 # Resource to create firewall policies using for_each
 resource "fortios_firewall_policy" "firewall_policy" {
   for_each = var.firewall_policies
