@@ -34,14 +34,14 @@ resource "fortios_firewall_policy" "firewall_policy" {
   dynamic "srcaddr" {
     for_each = [each.value.src_addr]
     content {
-      name = src_addr.value
+      name = srcaddr.value
     }
   }
 
   dynamic "dstaddr" {
     for_each = [each.value.dst_addr]
     content {
-      name = dst_addr.value
+      name = dstaddr.value
     }
   }
 
