@@ -6,8 +6,8 @@ output "firewall_policy" {
     name => {
       name     = policy.name
       id       = policy.id
-      src_addr = policy.src_addr
-      dst_addr = policy.dst_addr
+      src_addr = policy.srcaddr
+      dst_addr = policy.dstaddr
     }
   }
 }
