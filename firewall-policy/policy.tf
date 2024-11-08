@@ -31,14 +31,14 @@ resource "fortios_firewall_policy" "firewall_policy" {
   }
 
   # Define source and destination address blocks
-  dynamic "srcaddr" {
+  dynamic "src_addr" {
     for_each = [each.value.src_addr]
     content {
       name = src_addr.value
     }
   }
 
-  dynamic "dstaddr" {
+  dynamic "dst_addr" {
     for_each = [each.value.dst_addr]
     content {
       name = dst_addr.value
