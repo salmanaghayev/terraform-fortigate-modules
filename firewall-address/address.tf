@@ -20,7 +20,7 @@ resource "fortios_firewall_address" "firewall_address" {
   fqdn    = each.value["type"] == "fqdn" ? lookup(each.value, "fqdn", null) : null
   country = each.value["type"] == "geography" ? lookup(each.value, "country", null) : null
 
-  lifecycle {
-    create_before_destroy = true
-  }
+  #   lifecycle {
+  #     create_before_destroy = true
+  #   }
 }
