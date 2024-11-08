@@ -1,3 +1,12 @@
+terraform {
+  required_providers {
+    fortios = {
+      source = "fortinetdev/fortios"
+    }
+  }
+}
+
+
 # Resource to create firewall addresses using for_each
 resource "fortios_firewall_address" "firewall_address" {
   for_each = var.addresses
