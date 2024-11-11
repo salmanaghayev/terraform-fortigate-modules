@@ -12,6 +12,7 @@ variable "firewall_policies" {
     schedule   = string
     service    = list(string)
     logtraffic = string
+    comments   = string
   }))
   default = null
 }

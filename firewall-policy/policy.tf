@@ -14,6 +14,7 @@ resource "fortios_firewall_policy" "firewall_policy" {
   action     = each.value.action
   schedule   = each.value.schedule
   logtraffic = each.value.logtraffic
+  comments   = each.value.comments
 
   # Define source and destination interface blocks
   dynamic "srcintf" {
