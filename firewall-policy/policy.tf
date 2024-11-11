@@ -14,7 +14,7 @@ resource "fortios_firewall_policy" "firewall_policy" {
   action     = each.value.action
   schedule   = each.value.schedule
   logtraffic = each.value.logtraffic
-  comments   = each.value.comments
+  comments   = lookup(each.value, "comments", "comment added by Terraform")
 
   # Define source and destination interface blocks
   dynamic "srcintf" {
