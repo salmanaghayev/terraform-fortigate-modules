@@ -14,5 +14,5 @@ variable "firewall_policies" {
     logtraffic = string
     comments   = optional(string)
   }))
-  default = null
+  # default = null
 }
