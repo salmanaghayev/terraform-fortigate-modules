@@ -9,10 +9,10 @@ variable "firewall_policies" {
     src_addr   = list(string)
     dst_addr   = list(string)
     action     = string
-    schedule   = string
+    schedule   = optional(string)
     service    = list(string)
     logtraffic = string
-    comments   = string
+    comments   = optional(string)
   }))
   default = null
 }

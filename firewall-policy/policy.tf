@@ -12,7 +12,7 @@ resource "fortios_firewall_policy" "firewall_policy" {
 
   name       = each.value.name
   action     = each.value.action
-  schedule   = each.value.schedule
+  schedule   = lookup(each.value, "schedule", "always")
   logtraffic = each.value.logtraffic
   comments   = lookup(each.value, "comments", "comment added by Terraform")
 
