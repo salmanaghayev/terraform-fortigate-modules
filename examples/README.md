@@ -1,67 +1,143 @@
 # FortiGate Terraform Module Examples
 
-This directory contains example configurations for the FortiGate Terraform modules. Each example demonstrates different use cases and configurations for the modules.
+This directory contains example configurations for the FortiGate Terraform modules. The examples demonstrate how to use all modules together in a single firewall configuration.
 
-## Directory Structure
+## File Structure
 
-- `firewall-address/` - Examples for managing firewall address objects
-- `firewall-policy/` - Examples for managing firewall policies
-- `firewall-service/` - Examples for managing custom firewall services
+- `main.tf` - Provider configuration and module declarations
+- `address-vars.tf` - Locals map for firewall addresses
+- `service-vars.tf` - Locals map for firewall services
+- `policy-vars.tf` - Locals map for firewall policies
+- `address-groups.tf` - Locals map for firewall address groups (if used)
+
+## Configuration Structure
+
+Each configuration type is defined in its own file using a `locals` block. The main configuration (`main.tf`) loads these maps and passes them to the respective modules.
+
+### Example main.tf
+```hcl
+provider "fortios" {
+  hostname     = var.fortigate_hostname
+  token        = var.fortigate_token
+  insecure     = false
+  vdom         = "terraform"
+  cabundlefile = var.ca_bundle_file
+}
+
+module "firewall_address" {
+  source = "../firewall-address"
+  firewall_addresses = local.firewall_addresses
+}
+
+module "firewall_service" {
+  source = "../firewall-service"
+  firewall_services = local.firewall_services
+}
+
+module "firewall_policy" {
+  source = "../firewall-policy"
+  firewall_policies = local.firewall_policies
+}
+```
+
+### Example address-vars.tf
+```hcl
+locals {
+  firewall_addresses = {
+    # ... address objects ...
+  }
+}
+```
+
+### Example service-vars.tf
+```hcl
+locals {
+  firewall_services = {
+    # ... service objects ...
+  }
+}
+```
+
+### Example policy-vars.tf
+```hcl
+locals {
+  firewall_policies = {
+    # ... policy objects ...
+  }
+}
+```
+
+### Example address-groups.tf (optional)
+```hcl
+locals {
+  firewall_addrgrps = {
+    # ... address group objects ...
+  }
+}
+```
 
 ## Usage
 
-1. Navigate to the example directory you want to use:
-   ```bash
-   cd firewall-address  # or firewall-policy or firewall-service
-   ```
-
-2. Create a `terraform.tfvars` file with your FortiGate credentials:
+1. Create a `terraform.tfvars` file with your FortiGate credentials:
    ```hcl
    fortigate_hostname = "your-fortigate-hostname"
    fortigate_token    = "your-api-token"
+   ca_bundle_file     = "./Fortinet_CA_SSL.crt"
    ```
 
-3. Initialize Terraform:
+2. Initialize Terraform:
    ```bash
    terraform init
    ```
 
-4. Review the planned changes:
+3. Review the planned changes:
    ```bash
    terraform plan
    ```
 
-5. Apply the configuration:
+4. Apply the configuration:
    ```bash
    terraform apply
    ```
 
-## Example Configurations
+## Configuration Examples
 
-### Firewall Address Examples
-- IP/Mask address configuration
-- FQDN address configuration
-- Geography-based address configuration
+### Firewall Services (services.tf)
+- Custom TCP services (e.g., web ports 8080, 8443)
+- Custom UDP services (e.g., DNS port 5353)
+- ICMP services
 
-### Firewall Policy Examples
-- Basic internet access policy
-- DMZ to internal network policy
-- Block malicious traffic policy
+### Firewall Addresses (addresses.tf)
+- Single IP addresses (e.g., h-192.168.1.11/32)
+- FQDN addresses (e.g., dns.google)
+- Geography-based addresses (e.g., CA locations)
 
-### Firewall Service Examples
-- Custom TCP service
-- Custom UDP service
-- ICMP service
-- SCTP service
+### Firewall Address Groups (address-groups.tf)
+- Web servers group
+- External servers group
+
+### Firewall Policies (policies.tf)
+- Web access policies
+- DNS access policies
+- Security policies (block malicious traffic)
 
 ## Security Notes
 
 1. Never commit sensitive information like API tokens to version control
-2. Use environment variables or secure secret management for sensitive data
-3. Set `insecure = false` in production environments
-4. Review and adjust the example configurations according to your security requirements
+2. Use environment variables for sensitive data:
+   ```bash
+   export FORTIOS_ACCESS_HOSTNAME="your-fortigate-hostname"
+   export FORTIOS_ACCESS_TOKEN="your-api-token"
+   export FORTIOS_INSECURE="false"
+   export FORTIOS_CA_CABUNDLE="/path/to/yourCA.crt"
+   ```
+3. Always set `insecure = false` in production environments
+4. Use proper SSL certificate verification with CA bundle
+5. Review and adjust the example configurations according to your security requirements
+6. Use VDOM (Virtual Domain) for better resource isolation
 
 ## Additional Resources
 
 - [FortiGate Terraform Provider Documentation](https://registry.terraform.io/providers/fortinetdev/fortios/latest/docs)
-- [FortiGate REST API Documentation](https://fndn.fortinet.net/) 
+- [FortiGate REST API Documentation](https://fndn.fortinet.net/)
+- [FortiGate VDOM Documentation](https://docs.fortinet.com/document/fortigate/7.0.0/administration-guide/71273/virtual-domains) 
