@@ -12,4 +12,4 @@ locals {
       comment = "External servers group"
     }
   }
-} 
+}

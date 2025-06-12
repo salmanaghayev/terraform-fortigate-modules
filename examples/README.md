@@ -8,7 +8,7 @@ This directory contains example configurations for the FortiGate Terraform modul
 - `address-vars.tf` - Locals map for firewall addresses
 - `service-vars.tf` - Locals map for firewall services
 - `policy-vars.tf` - Locals map for firewall policies
-- `address-groups.tf` - Locals map for firewall address groups (if used)
+- `address-groups-vars.tf` - Locals map for firewall address groups
 
 ## Configuration Structure
 
@@ -29,6 +29,12 @@ module "firewall_address" {
   firewall_addresses = local.firewall_addresses
 }
 
+module "firewall_addrgrp" {
+  source = "../firewall-addrgrp"
+  firewall_addrgrps = local.firewall_addrgrps
+  depends_on = [module.firewall_address]
+}
+
 module "firewall_service" {
   source = "../firewall-service"
   firewall_services = local.firewall_services
@@ -37,6 +43,7 @@ module "firewall_service" {
 module "firewall_policy" {
   source = "../firewall-policy"
   firewall_policies = local.firewall_policies
+  depends_on = [module.firewall_service, module.firewall_address]
 }
 ```
 
@@ -67,7 +74,7 @@ locals {
 }
 ```
 
-### Example address-groups.tf (optional)
+### Example address-groups-vars.tf
 ```hcl
 locals {
   firewall_addrgrps = {
@@ -112,7 +119,7 @@ locals {
 - FQDN addresses (e.g., dns.google)
 - Geography-based addresses (e.g., CA locations)
 
-### Firewall Address Groups (address-groups.tf)
+### Firewall Address Groups (address-groups-vars.tf)
 - Web servers group
 - External servers group
 
