@@ -2,6 +2,10 @@
 
 This directory contains example configurations for the FortiGate Terraform modules. The examples demonstrate how to use all modules together in a single firewall configuration.
 
+> **Naming Convention Note:**
+> 
+> FortiGate firewalls are sensitive to object names. When referencing addresses, address groups, or services in your firewall policies, you must use the exact same names as defined in your `address-vars.tf`, `address-groups-vars.tf`, and `service-vars.tf` files. For example, if you define a service or address as `"web-service"` in `service-vars.tf`, you must reference `"web-service"` by that exact name in your `policy-vars.tf` file. Consistent naming is required for all cross-references between addresses, address groups, services, and policies.
+
 ## File Structure
 
 - `main.tf` - Provider configuration and module declarations
