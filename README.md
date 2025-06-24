@@ -1,6 +1,6 @@
 # Terraform FortiGate Modules
 
-This repository contains Terraform modules for managing FortiGate firewall configurations. The modules are designed to help you manage firewall addresses, address groups, policies, and services in a structured and maintainable way.
+This repository contains Terraform modules for managing FortiGate firewall configurations. The modules are designed to help you manage firewall addresses, address groups, VIP/DNATs, policies, and services in a structured and maintainable way.
 
 ## Modules
 
@@ -21,7 +21,16 @@ Manages address groups in FortiGate. Supports:
 **Input:**
 - `firewall_addrgrps` (map): A map of address group objects. See the [examples](./examples) for structure.
 
-### 3. Firewall Policy Module (`firewall-policy/`)
+### 3. Firewall VIP/DNAT Module (`firewall-vip/`)
+Manages Virtual IPs (VIPs) and Destination NAT (DNAT) rules in FortiGate. Supports:
+- Static and port-forwarding VIPs
+- Mapping external IP/port to internal IP/port
+- VIP groups
+
+**Input:**
+- `firewall_vips` (map): A map of VIP/DNAT objects. See the [examples](./examples) for structure.
+
+### 4. Firewall Policy Module (`firewall-policy/`)
 Manages firewall policies in FortiGate. Supports:
 - Source/destination interfaces
 - Source/destination addresses
@@ -31,7 +40,7 @@ Manages firewall policies in FortiGate. Supports:
 **Input:**
 - `firewall_policies` (map): A map of policy objects. See the [examples](./examples) for structure.
 
-### 4. Firewall Service Module (`firewall-service/`)
+### 5. Firewall Service Module (`firewall-service/`)
 Manages custom firewall services in FortiGate. Supports:
 - TCP, UDP, SCTP services
 - Custom service categories
@@ -49,6 +58,7 @@ A complete example is provided in the [`examples/`](./examples) directory. Each 
 - `service-vars.tf` – Locals map for services
 - `policy-vars.tf` – Locals map for policies
 - `address-groups-vars.tf` – Locals map for address groups
+- `vip-vars.tf` – Locals map for VIP/DNAT objects
 
 **Example main.tf:**
 ```hcl
@@ -69,6 +79,11 @@ module "firewall_addrgrp" {
   source = "../firewall-addrgrp"
   firewall_addrgrps = local.firewall_addrgrps
   depends_on = [module.firewall_address]
+}
+
+module "firewall_vip" {
+  source = "../firewall-vip"
+  firewall_vips = local.firewall_vips
 }
 
 module "firewall_service" {
