@@ -8,7 +8,7 @@ locals {
 
     "external-servers" = {
       name    = "external-servers"
-      members = ["h-142.148.10.120", "Google_DNS"]
+      members = ["h-192.168.1.12-1", "Google_DNS"]
       comment = "External servers group"
     }
   }
