@@ -4,7 +4,7 @@ This directory contains example configurations for the FortiGate Terraform modul
 
 > **Naming Convention Note:**
 > 
-> FortiGate firewalls are sensitive to object names. When referencing addresses, address groups, or services in your firewall policies, you must use the exact same names as defined in your `address-vars.tf`, `address-groups-vars.tf`, and `service-vars.tf` files. For example, if you define a service or address as `"web-service"` in `service-vars.tf`, you must reference `"web-service"` by that exact name in your `policy-vars.tf` file. Consistent naming is required for all cross-references between addresses, address groups, services, and policies.
+> FortiGate firewalls are sensitive to object names. When referencing addresses, address groups, VIPs, or services in your firewall policies, you must use the exact same names as defined in your `address-vars.tf`, `address-groups-vars.tf`, `vip-vars.tf`, and `service-vars.tf` files. For example, if you define a VIP or service as `"web-vip"` in `vip-vars.tf`, you must reference `"web-vip"` by that exact name in your `policy-vars.tf` file. Consistent naming is required for all cross-references between addresses, address groups, VIPs, services, and policies.
 
 ## File Structure
 
@@ -13,6 +13,7 @@ This directory contains example configurations for the FortiGate Terraform modul
 - `service-vars.tf` - Locals map for firewall services
 - `policy-vars.tf` - Locals map for firewall policies
 - `address-groups-vars.tf` - Locals map for firewall address groups
+- `vip-vars.tf` - Locals map for firewall VIP/DNAT objects
 
 ## Configuration Structure
 
@@ -37,6 +38,11 @@ module "firewall_addrgrp" {
   source = "../firewall-addrgrp"
   firewall_addrgrps = local.firewall_addrgrps
   depends_on = [module.firewall_address]
+}
+
+module "firewall_vip" {
+  source = "../firewall-vip"
+  firewall_vips = local.firewall_vips
 }
 
 module "firewall_service" {
@@ -73,7 +79,21 @@ locals {
 ```hcl
 locals {
   firewall_policies = {
-    # ... policy objects ...
+    "web-policy" = {
+      name                = "web-policy"
+      src_intf            = "port1"
+      dst_intf            = "port2"
+      src_addr            = ["all"]
+      dst_addr            = ["all"]
+      service             = ["HTTP", "HTTPS"]
+      action              = "accept"
+      schedule            = "always"
+      utm_status          = "enable"
+      av_profile          = "default"
+      webfilter_profile   = "default"
+      logtraffic          = "all"
+      comments            = "Allow web traffic with UTM profiles"
+    }
   }
 }
 ```
@@ -83,6 +103,23 @@ locals {
 locals {
   firewall_addrgrps = {
     # ... address group objects ...
+  }
+}
+```
+
+### Example vip-vars.tf
+```hcl
+locals {
+  firewall_vips = {
+    # "web-vip" = {
+    #   name           = "web-vip"
+    #   type           = "static-nat"
+    #   extip          = "203.0.113.10"
+    #   mappedip       = "192.168.1.10"
+    #   extintf        = "wan1"
+    #   portforward    = false
+    #   comment        = "Web server DNAT"
+    # }
   }
 }
 ```

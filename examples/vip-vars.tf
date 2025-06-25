@@ -34,9 +34,5 @@ locals {
       type      = "static-nat"
       mappedips = ["142.148.45.23"]
     }
-
   }
-
-
-
 }

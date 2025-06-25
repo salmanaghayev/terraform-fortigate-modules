@@ -36,9 +36,32 @@ Manages firewall policies in FortiGate. Supports:
 - Source/destination addresses
 - Services
 - Action and logging settings
+- Scheduling
+- UTM and security profiles:
+  - `utm_status`, `application_list`, `av_profile`, `dnsfilter_profile`, `file_filter_profile`, `ips_sensor`, `ssl_ssh_profile`, `webfilter_profile`
+- Comments and logging
 
 **Input:**
 - `firewall_policies` (map): A map of policy objects. See the [examples](./examples) for structure.
+
+**Example policy object:**
+```hcl
+"web-policy" = {
+  name                = "web-policy"
+  src_intf            = "port1"
+  dst_intf            = "port2"
+  src_addr            = ["all"]
+  dst_addr            = ["all"]
+  service             = ["HTTP", "HTTPS"]
+  action              = "accept"
+  schedule            = "always"
+  utm_status          = "enable"
+  av_profile          = "default"
+  webfilter_profile   = "default"
+  logtraffic          = "all"
+  comments            = "Allow web traffic with UTM profiles"
+}
+```
 
 ### 5. Firewall Service Module (`firewall-service/`)
 Manages custom firewall services in FortiGate. Supports:

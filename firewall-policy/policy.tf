@@ -10,11 +10,19 @@ terraform {
 resource "fortios_firewall_policy" "firewall_policy" {
   for_each = var.firewall_policies
 
-  name       = each.value.name
-  action     = each.value.action
-  schedule   = lookup(each.value, "schedule", "always")
-  logtraffic = each.value.logtraffic
-  comments   = lookup(each.value, "comments", "comment added by Terraform")
+  name                = each.value.name
+  action              = each.value.action
+  schedule            = lookup(each.value, "schedule", "always")
+  logtraffic          = each.value.logtraffic
+  comments            = lookup(each.value, "comments", "comment added by Terraform")
+  utm_status          = each.value.utm_status
+  application_list    = each.value.application_list
+  av_profile          = each.value.av_profile
+  dnsfilter_profile   = each.value.dnsfilter_profile
+  file_filter_profile = each.value.file_filter_profile
+  ips_sensor          = each.value.ips_sensor
+  ssl_ssh_profile     = each.value.ssl_ssh_profile
+  webfilter_profile   = each.value.webfilter_profile
 
   # Define source and destination interface blocks
   dynamic "srcintf" {
